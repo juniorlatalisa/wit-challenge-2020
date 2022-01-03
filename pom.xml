@@ -10,6 +10,7 @@
 	<packaging>pom</packaging>
 	<modules>
 		<module>wit-challenge-2020-common</module>
+		<module>wit-challenge-2020-calculator</module>
 		<module>wit-challenge-2020-rest</module>
 	</modules>
 </project>

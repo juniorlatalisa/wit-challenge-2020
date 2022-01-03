@@ -3,6 +3,7 @@ package br.dev.juniorlatalisa.wit.controller;
 import java.math.BigDecimal;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,22 +20,22 @@ public class OperationsController {
 	private RabbitMQService queues;
 
 	@GetMapping("/sum")
-	public OperationResponse add(@RequestParam BigDecimal a, @RequestParam BigDecimal b) {
+	public ResponseEntity<OperationResponse> add(@RequestParam BigDecimal a, @RequestParam BigDecimal b) {
 		return queues.send(new OperationRequest(a, b, Operation.ADDITION));
 	}
 
 	@GetMapping("/min")
-	public OperationResponse subtract(@RequestParam BigDecimal a, @RequestParam BigDecimal b) {
+	public ResponseEntity<OperationResponse> subtract(@RequestParam BigDecimal a, @RequestParam BigDecimal b) {
 		return queues.send(new OperationRequest(a, b, Operation.SUBTRACTION));
 	}
 
 	@GetMapping("/div")
-	public OperationResponse divide(@RequestParam BigDecimal a, @RequestParam BigDecimal b) {
+	public ResponseEntity<OperationResponse> divide(@RequestParam BigDecimal a, @RequestParam BigDecimal b) {
 		return queues.send(new OperationRequest(a, b, Operation.DIVISION));
 	}
 
 	@GetMapping("/mult")
-	public OperationResponse times(@RequestParam BigDecimal a, @RequestParam BigDecimal b) {
+	public ResponseEntity<OperationResponse> times(@RequestParam BigDecimal a, @RequestParam BigDecimal b) {
 		return queues.send(new OperationRequest(a, b, Operation.MULTIPLICATION));
 	}
 }
