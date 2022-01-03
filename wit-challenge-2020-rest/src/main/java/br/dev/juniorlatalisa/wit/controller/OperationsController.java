@@ -1,32 +1,40 @@
 package br.dev.juniorlatalisa.wit.controller;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.dev.juniorlatalisa.wit.model.Operation;
+import br.dev.juniorlatalisa.wit.model.OperationRequest;
+import br.dev.juniorlatalisa.wit.model.OperationResponse;
+import br.dev.juniorlatalisa.wit.service.RabbitMQService;
+
 @RestController
 public class OperationsController {
 
+	@Autowired
+	private RabbitMQService queues;
+
 	@GetMapping("/sum")
-	public BigDecimal add(@RequestParam BigDecimal a, @RequestParam BigDecimal b) {
-		return a.add(b, MathContext.DECIMAL128);
+	public OperationResponse add(@RequestParam BigDecimal a, @RequestParam BigDecimal b) {
+		return queues.send(new OperationRequest(a, b, Operation.ADDITION));
 	}
 
 	@GetMapping("/min")
-	public BigDecimal subtract(@RequestParam BigDecimal a, @RequestParam BigDecimal b) {
-		return a.subtract(b, MathContext.DECIMAL128);
+	public OperationResponse subtract(@RequestParam BigDecimal a, @RequestParam BigDecimal b) {
+		return queues.send(new OperationRequest(a, b, Operation.SUBTRACTION));
 	}
 
 	@GetMapping("/div")
-	public BigDecimal divide(@RequestParam BigDecimal a, @RequestParam BigDecimal b) {
-		return a.divide(b, MathContext.DECIMAL128);
+	public OperationResponse divide(@RequestParam BigDecimal a, @RequestParam BigDecimal b) {
+		return queues.send(new OperationRequest(a, b, Operation.DIVISION));
 	}
 
 	@GetMapping("/mult")
-	public BigDecimal times(@RequestParam BigDecimal a, @RequestParam BigDecimal b) {
-		return a.multiply(b, MathContext.DECIMAL128);
+	public OperationResponse times(@RequestParam BigDecimal a, @RequestParam BigDecimal b) {
+		return queues.send(new OperationRequest(a, b, Operation.MULTIPLICATION));
 	}
 }
