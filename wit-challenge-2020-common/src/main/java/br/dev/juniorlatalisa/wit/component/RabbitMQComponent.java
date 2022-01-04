@@ -8,6 +8,8 @@ import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Queue;
 import org.springframework.stereotype.Component;
 
+import br.dev.juniorlatalisa.wit.utils.LogUtils;
+
 @Component
 public class RabbitMQComponent {
 
@@ -35,11 +37,16 @@ public class RabbitMQComponent {
 	@PostConstruct
 	protected void postConstruct() {
 		var fila = fila(QUEUE_NAME);
-		var declareQueue = amqpAdmin.declareQueue(fila);
+		try {
+			var declareQueue = amqpAdmin.declareQueue(fila);
+			LogUtils.logger.info("DeclareQueue: " + declareQueue);
+		} catch (Throwable e) {
+			LogUtils.logger.error("DeclareQueue: " + fila.getName(), e);
+			return;
+		}
 		var troca = trocaDireta();
 		amqpAdmin.declareExchange(troca);
 		var relacionamento = relacionamento(fila, troca);
 		amqpAdmin.declareBinding(relacionamento);
-		System.out.println(declareQueue);
 	}
 }
