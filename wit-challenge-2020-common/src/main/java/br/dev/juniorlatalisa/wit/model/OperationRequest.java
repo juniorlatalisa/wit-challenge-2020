@@ -7,15 +7,21 @@ import java.util.Objects;
 @SuppressWarnings("serial")
 public class OperationRequest implements Serializable {
 
-	public OperationRequest(BigDecimal valueA, BigDecimal valueB, Operation operation) {
+	public OperationRequest(String id, BigDecimal valueA, BigDecimal valueB, Operation operation) {
 		this.valueA = valueA;
 		this.valueB = valueB;
 		this.operation = operation;
+		this.id = id;
 	}
 
+	private final String id;
 	private final BigDecimal valueA;
 	private final BigDecimal valueB;
 	private final Operation operation;
+
+	public String getId() {
+		return id;
+	}
 
 	public BigDecimal getValueA() {
 		return valueA;
@@ -31,7 +37,7 @@ public class OperationRequest implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(operation, valueA, valueB);
+		return Objects.hash(id, operation, valueA, valueB);
 	}
 
 	@Override
@@ -43,14 +49,14 @@ public class OperationRequest implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		OperationRequest other = (OperationRequest) obj;
-		return operation == other.operation && Objects.equals(valueA, other.valueA)
+		return Objects.equals(id, other.id) && operation == other.operation && Objects.equals(valueA, other.valueA)
 				&& Objects.equals(valueB, other.valueB);
 	}
 
 	@Override
 	public String toString() {
-		return "OperationRequest [" + (valueA != null ? "valueA=" + valueA + ", " : "")
-				+ (valueB != null ? "valueB=" + valueB + ", " : "")
+		return "OperationRequest [" + (id != null ? "id=" + id + ", " : "")
+				+ (valueA != null ? "valueA=" + valueA + ", " : "") + (valueB != null ? "valueB=" + valueB + ", " : "")
 				+ (operation != null ? "operation=" + operation : "") + "]";
 	}
 }

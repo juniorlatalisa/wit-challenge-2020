@@ -1,6 +1,7 @@
 package br.dev.juniorlatalisa.wit.controller;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,21 +22,25 @@ public class OperationsController {
 
 	@GetMapping("/sum")
 	public ResponseEntity<OperationResponse> add(@RequestParam BigDecimal a, @RequestParam BigDecimal b) {
-		return queues.send(new OperationRequest(a, b, Operation.ADDITION));
+		return queues.send(createOperationRequest(a, b, Operation.ADDITION));
 	}
 
 	@GetMapping("/min")
 	public ResponseEntity<OperationResponse> subtract(@RequestParam BigDecimal a, @RequestParam BigDecimal b) {
-		return queues.send(new OperationRequest(a, b, Operation.SUBTRACTION));
+		return queues.send(createOperationRequest(a, b, Operation.SUBTRACTION));
 	}
 
 	@GetMapping("/div")
 	public ResponseEntity<OperationResponse> divide(@RequestParam BigDecimal a, @RequestParam BigDecimal b) {
-		return queues.send(new OperationRequest(a, b, Operation.DIVISION));
+		return queues.send(createOperationRequest(a, b, Operation.DIVISION));
 	}
 
 	@GetMapping("/mult")
 	public ResponseEntity<OperationResponse> times(@RequestParam BigDecimal a, @RequestParam BigDecimal b) {
-		return queues.send(new OperationRequest(a, b, Operation.MULTIPLICATION));
+		return queues.send(createOperationRequest(a, b, Operation.MULTIPLICATION));
+	}
+
+	protected OperationRequest createOperationRequest(BigDecimal valueA, BigDecimal valueB, Operation operation) {
+		return new OperationRequest(UUID.randomUUID().toString(), valueA, valueB, operation);
 	}
 }
