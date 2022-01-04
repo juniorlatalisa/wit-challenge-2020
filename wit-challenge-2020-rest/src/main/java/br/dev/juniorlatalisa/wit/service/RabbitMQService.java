@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import br.dev.juniorlatalisa.wit.component.RabbitMQComponent;
 import br.dev.juniorlatalisa.wit.model.OperationRequest;
 import br.dev.juniorlatalisa.wit.model.OperationResponse;
+import br.dev.juniorlatalisa.wit.utils.LogUtils;
 
 @Service
 public class RabbitMQService {
@@ -21,6 +22,8 @@ public class RabbitMQService {
 	private String responseId;
 
 	public ResponseEntity<OperationResponse> send(OperationRequest request) {
+		LogUtils.logger.info(String.format("Request Queue Add [%s] ID [%s]", //
+				RabbitMQComponent.QUEUE_NAME, request.getId()));
 		var entity = (OperationResponse) rabbitTemplate.convertSendAndReceive(RabbitMQComponent.QUEUE_NAME, request);
 		BodyBuilder builder;
 		if (entity == null) {

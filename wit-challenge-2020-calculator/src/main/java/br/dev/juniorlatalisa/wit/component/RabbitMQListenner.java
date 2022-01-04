@@ -8,12 +8,15 @@ import org.springframework.stereotype.Component;
 
 import br.dev.juniorlatalisa.wit.model.OperationRequest;
 import br.dev.juniorlatalisa.wit.model.OperationResponse;
+import br.dev.juniorlatalisa.wit.utils.LogUtils;
 
 @Component
 public class RabbitMQListenner {
 
 	@RabbitListener(queues = RabbitMQComponent.QUEUE_NAME)
 	public OperationResponse onRequest(OperationRequest request) {
+		LogUtils.logger.info(String.format("Process ID [%s] from Queue [%s]", //
+				request.getId(), RabbitMQComponent.QUEUE_NAME));
 		return new OperationResponse(calculate(request, MathContext.DECIMAL128));
 	}
 
