@@ -1,3 +1,4 @@
+version: '2'
 services:
     rabbitmq:
         image: rabbitmq:3-management
@@ -5,8 +6,8 @@ services:
         ports:
             - 5672:5672
             - 15672:15672
-        volumes:
-            - ~/wit-challenge-2020/dados:/var/lib/rabbitmq/
+#        volumes:
+#            - ~/wit-challenge-2020/dados:/var/lib/rabbitmq/
         environment:
             - RABBITMQ_DEFAULT_USER=juniorlatalisa
             - RABBITMQ_DEFAULT_PASS=ChallengeWIT@2020

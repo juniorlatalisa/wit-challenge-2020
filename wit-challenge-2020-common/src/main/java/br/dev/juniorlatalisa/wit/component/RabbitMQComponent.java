@@ -21,7 +21,7 @@ public class RabbitMQComponent {
 	}
 
 	protected Queue fila(String nomeFila) {
-		return new Queue(nomeFila, true, false, false);
+		return new Queue(nomeFila, false, false, false);
 	}
 
 	protected DirectExchange trocaDireta() {
